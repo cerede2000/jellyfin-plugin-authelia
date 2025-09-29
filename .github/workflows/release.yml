@@ -1,10 +1,9 @@
 name: Release
 
 on:
+  workflow_dispatch:
   release:
-    types:
-      - released
-    branches: main
+    types: [published]
 
 jobs:
   build:
@@ -19,7 +18,7 @@ jobs:
       - name: Setup dotnet
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: 9.0.x
       - name: Restore nuget packages
         run: dotnet restore Authelia-Auth/Authelia-Auth.csproj
       - name: Setup python
@@ -29,7 +28,7 @@ jobs:
       - name: Install JPRM
         run: python -m pip install jprm
       - name: Run JPRM
-        run: python build_plugin.py --version=${GITHUB_REF#refs/*/}
+        run: python build_plugin.py --version=1.0.16.0
       - name: Update release
         uses: svenstaro/upload-release-action@v2
         with:
